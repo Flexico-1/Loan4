@@ -1,1 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Loan / Application Form — Applicant & Guarantors</title>
+<style>
+  /* Black & white mobile-first responsive form */
+  :root{
+    --bg: #ffffff;
+    --card: #ffffff;
+    --text: #111;
+    --muted: #666;
+    --border: #ddd;
+    --accent: #000;
+    --radius: 10px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Sinhala", "Noto Sans", Arial;
+  }
 
+  html,body{height:100%;margin:0;background:var(--bg);color:var(--text);}
+  .container{
+    max-width:900px;
+    margin:0 auto;
+    padding:16px;
+  }
+
+  form.app-form{
+    width:100%;
+    background:linear-gradient(0deg,#fff,#fff);
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    padding:14px;
+    box-sizing:border-box;
+  }
+
+  .top-row{
+    display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px;
+  }
+  .title{
+    font-weight:700;font-size:18px;
+  }
+  .lang-toggle{
+    display:flex;gap:8px;
+  }
+  .lang-toggle button{
+    border:1px solid var(--border);
+    background:transparent;padding:8px 10px;border-radius:8px;font-weight:600;cursor:pointer;
+  }
+
+  .section{
+    border-top:1px dashed var(--border);
+    padding-top:12px;margin-top:12px;
+  }
+  .section h3{margin:0 0 10px 0;font-size:15px;}
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:10px;
+  }
+
+  @media(min-width:720px){
+    .grid.cols-2{grid-template-columns:1fr 1fr;}
+    .grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+  }
+
+  label{
+    display:block;font-size:13px;color:var(--muted);margin-bottom:6px;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  textarea,
+  select{
+    width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid var(--border);
+    font-size:14px;background:transparent;color:var(--text);
+  }
+  textarea{min-height:70px;resize:vertical;}
+
+  .small{
+    font-size:12px;color:var(--muted);
+  }
+
+  .file-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .file-box{
+    flex:1 1 200px;border:1px dashed var(--border);padding:8px;border-radius:8px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  input[type="file"]{font-size:13px;}
+
+  .btn{
+    display:inline-block;padding:10px 14px;border-radius:10px;border:2px solid var(--accent);
+    background:var(--accent);color:#fff;font-weight:700;text-decoration:none;cursor:pointer;
+  }
+
+  .muted-note{font-size:12px;color:var(--muted);margin-top:6px;}
+
+  /* guarantor card */
+  .guarantor{
+    border:1px solid var(--border);padding:10px;border-radius:10px;margin-bottom:10px;background:#fafafa;
+  }
+  .row{display:flex;gap:8px;flex-wrap:wrap;}
+  .row > *{flex:1 1 200px;}
+
+  /* small helpers */
+  .inline-note{font-size:12px;color:var(--muted);}
+  .required{color:#b00;margin-left:6px;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="container">
+  <form class="app-form" id="loanForm" enctype="multipart/form-data" autocomplete="on">
+    <div class="top-row">
+      <div class="title" data-en="Loan Application Form" data-si="ණය අයදුම්පත්‍රය">Loan Application Form</div>
+      <div class="lang-toggle">
+        <button type="button" id="btn-en">EN</button>
+        <button type="button" id="btn-si">සිං</button>
+      </div>
+    </div>
+
+    <!-- APPLICANT SECTION -->
+    <div class="section" id="applicantSection">
+      <h3 data-en="Applicant details" data-si="අයදුම්කරුගේ විස්තර">Applicant details</h3>
+
+      <div class="grid">
+        <div>
+          <label data-en="Full name" data-si="නිවැරදි නම">Full name <span class="required">*</span></label>
+          <input name="app_name" type="text" required placeholder="e.g. John Perera / ජෝන් පෙරේරා">
+        </div>
+
+        <div>
+          <label data-en="Village / City" data-si="ගම / නගරය">Village / City</label>
+          <input name="app_village" type="text" placeholder="Village or City">
+        </div>
+
+        <div>
+          <label data-en="National ID Number" data-si="ජාතික හැදුනුම්පත් අංකය">National ID Number <span class="required">*</span></label>
+          <input name="app_nic" type="text" required placeholder="National ID">
+        </div>
+
+        <div>
+          <label data-en="Phone number" data-si="දුරකථන අංකය">Phone number <span class="required">*</span></label>
+          <input name="app_phone" type="tel" required placeholder="+94xxxxxxxxx">
+        </div>
+
+        <div>
+          <label data-en="Email address" data-si="ඊමේල් ලිපිනය">Email address</label>
+          <input name="app_email" type="email" placeholder="you@example.com">
+        </div>
+
+        <div>
+          <label data-en="Current occupation" data-si="දැනට කරන රැකියාව">Current occupation</label>
+          <input name="app_job" type="text" placeholder="e.g. Sales / Teacher">
+        </div>
+
+        <div>
+          <label data-en="Monthly income (LKR)" data-si="මාසික ආදායම (LKR)">Monthly income (LKR)</label>
+          <input name="app_income" type="number" min="0" placeholder="e.g. 50000">
+        </div>
+
+        <div>
+          <label data-en="Workplace address" data-si="රැකියා ස්ථානයේ ලිපිනය">Workplace address</label>
+          <textarea name="app_work_addr" placeholder="Workplace full address"></textarea>
+        </div>
+      </div>
+
+      <div style="margin-top:10px">
+        <label data-en="Upload Applicant ID (front & back)" data-si="අයදුම්කරුගේ හැදුනුම්පත් උඩුපොත (ඉදිරි/පිටපස)">Upload Applicant ID (front & back)</label>
+        <div class="file-row">
+          <div class="file-box">
+            <div class="small" data-en="Front (photo page) / ඉදිරිපස" data-si="ඉදිරිපස (පින්තූර පිටුව)">Front (photo page)</div>
+            <input name="app_id_front" type="file" accept="image/*,application/pdf" required>
+          </div>
+          <div class="file-box">
+            <div class="small" data-en="Back / පිටපස" data-si="පිටපස">Back</div>
+            <input name="app_id_back" type="file" accept="image/*,application/pdf" required>
+          </div>
+        </div>
+
+        <div style="margin-top:8px">
+          <label data-en="Card front number" data-si="කාඩ් ඉදිරිපස අංකය">Card front number</label>
+          <input name="app_card_front_no" type="text" placeholder="If applicable">
+        </div>
+        <div style="margin-top:8px">
+          <label data-en="Card back number" data-si="කාඩ් පිටුපස අංකය">Card back number</label>
+          <input name="app_card_back_no" type="text" placeholder="If applicable">
+        </div>
+      </div>
+    </div>
+
+    <!-- BANK DETAILS -->
+    <div class="section" id="bankSection">
+      <h3 data-en="Bank account details" data-si="ගිණුම් විස්තර">Bank account details</h3>
+      <div class="grid cols-2">
+        <div>
+          <label data-en="Bank name" data-si="බැංකුවේ නම">Bank name</label>
+          <input name="bank_name" type="text" placeholder="e.g. Bank of Ceylon">
+        </div>
+        <div>
+          <label data-en="Branch" data-si="ශාඛාව">Branch</label>
+          <input name="bank_branch" type="text" placeholder="Branch name">
+        </div>
+        <div>
+          <label data-en="Account number" data-si="ගිණුම් අංකය">Account number</label>
+          <input name="bank_acc_no" type="text" placeholder="Account number">
+        </div>
+        <div>
+          <label data-en="Account holder name" data-si="ගිණුම් හිමියාගේ නම">Account holder name</label>
+          <input name="bank_acc_name" type="text" placeholder="Name on account">
+        </div>
+      </div>
+    </div>
+
+    <!-- GUARANTORS -->
+    <div class="section" id="guarantorsSection">
+      <h3 data-en="Guarantors (3 persons)" data-si="ඇපකරුවන් (තුන්දෙනා)">Guarantors (3 persons)</h3>
+      <!-- We'll include three guarantor blocks -->
+      <div id="guarantorContainer">
+        <!-- Guarantor template repeated 3 times -->
+        <div class="guarantor" data-index="1">
+          <strong data-en="Guarantor 1" data-si="ඇපකරුවා 1">Guarantor 1</strong>
+          <div class="grid">
+            <div>
+              <label data-en="Full name" data-si="නම">Full name</label>
+              <input name="g1_name" type="text" placeholder="Guarantor full name">
+            </div>
+            <div>
+              <label data-en="National ID Number" data-si="ජා.හැ.අ. අංකය">National ID Number</label>
+              <input name="g1_nic" type="text" placeholder="NIC number">
+            </div>
+            <div>
+              <label data-en="Phone" data-si="දුරකථන">Phone</label>
+              <input name="g1_phone" type="tel" placeholder="+94">
+            </div>
+            <div>
+              <label data-en="Relationship" data-si="වෙනත් සබඳතාවය">Relationship</label>
+              <input name="g1_rel" type="text" placeholder="e.g. Father / Employer">
+            </div>
+          </div>
+
+          <div style="margin-top:8px">
+            <label data-en="Upload guarantor ID (front & back)" data-si="ඇපකරුවාගේ හැදුනුම්පත් උඩුපොත උඩු/පිටුව අප්ලෝඩ් කරන්න">Upload guarantor ID (front & back)</label>
+            <div class="file-row">
+              <div class="file-box">
+                <div class="small" data-en="Front" data-si="ඉදිරිපස">Front</div>
+                <input name="g1_id_front" type="file" accept="image/*,application/pdf">
+              </div>
+              <div class="file-box">
+                <div class="small" data-en="Back" data-si="පිටපස">Back</div>
+                <input name="g1_id_back" type="file" accept="image/*,application/pdf">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guarantor" data-index="2">
+          <strong data-en="Guarantor 2" data-si="ඇපකරුවා 2">Guarantor 2</strong>
+          <div class="grid">
+            <div>
+              <label data-en="Full name" data-si="නම">Full name</label>
+              <input name="g2_name" type="text" placeholder="Guarantor full name">
+            </div>
+            <div>
+              <label data-en="National ID Number" data-si="ජා.හැ.අ. අංකය">National ID Number</label>
+              <input name="g2_nic" type="text" placeholder="NIC number">
+            </div>
+            <div>
+              <label data-en="Phone" data-si="දුරකථන">Phone</label>
+              <input name="g2_phone" type="tel" placeholder="+94">
+            </div>
+            <div>
+              <label data-en="Relationship" data-si="වෙනත් සබඳතාවය">Relationship</label>
+              <input name="g2_rel" type="text" placeholder="e.g. Friend / Colleague">
+            </div>
+          </div>
+
+          <div style="margin-top:8px">
+            <label data-en="Upload guarantor ID (front & back)" data-si="ඇපකරුවාගේ හැදුනුම්පත් උඩුපොත උඩු/පිටුව අප්ලෝඩ් කරන්න">Upload guarantor ID (front & back)</label>
+            <div class="file-row">
+              <div class="file-box">
+                <div class="small" data-en="Front" data-si="ඉදිරිපස">Front</div>
+                <input name="g2_id_front" type="file" accept="image/*,application/pdf">
+              </div>
+              <div class="file-box">
+                <div class="small" data-en="Back" data-si="පිටපස">Back</div>
+                <input name="g2_id_back" type="file" accept="image/*,application/pdf">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guarantor" data-index="3">
+          <strong data-en="Guarantor 3" data-si="ඇපකරුවා 3">Guarantor 3</strong>
+          <div class="grid">
+            <div>
+              <label data-en="Full name" data-si="නම">Full name</label>
+              <input name="g3_name" type="text" placeholder="Guarantor full name">
+            </div>
+            <div>
+              <label data-en="National ID Number" data-si="ජා.හැ.අ. අංකය">National ID Number</label>
+              <input name="g3_nic" type="text" placeholder="NIC number">
+            </div>
+            <div>
+              <label data-en="Phone" data-si="දුරකථන">Phone</label>
+              <input name="g3_phone" type="tel" placeholder="+94">
+            </div>
+            <div>
+              <label data-en="Relationship" data-si="වෙනත් සබඳතාවය">Relationship</label>
+              <input name="g3_rel" type="text" placeholder="e.g. Neighbor">
+            </div>
+          </div>
+
+          <div style="margin-top:8px">
+            <label data-en="Upload guarantor ID (front & back)" data-si="ඇපකරුවාගේ හැදුනුම්පත් උඩුපොත උඩු/පිටුව අප්ලෝඩ් කරන්න">Upload guarantor ID (front & back)</label>
+            <div class="file-row">
+              <div class="file-box">
+                <div class="small" data-en="Front" data-si="ඉදිරිපස">Front</div>
+                <input name="g3_id_front" type="file" accept="image/*,application/pdf">
+              </div>
+              <div class="file-box">
+                <div class="small" data-en="Back" data-si="පිටපස">Back</div>
+                <input name="g3_id_back" type="file" accept="image/*,application/pdf">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <button type="submit" class="btn" id="submitBtn" data-en="Submit Application" data-si="යොමු කරන්න">Submit Application</button>
+      <div class="muted-note" data-en="All uploads accept images and PDFs. Required fields marked with *." data-si="අප්ලෝඩ් කිරීම් පින්තූර සහ PDF පිළිගනී. අවශ්‍ය ක්ෂේත්‍ර * විසින් සලකුණු කර ඇත.">
+        All uploads accept images and PDFs. Required fields marked with *.
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Language toggle: show either English or Sinhala labels/placeholder text
+  const btnEn = document.getElementById('btn-en');
+  const btnSi = document.getElementById('btn-si');
+
+  function setLanguage(lang){
+    document.querySelectorAll('[data-en]').forEach(el=>{
+      const en = el.getAttribute('data-en');
+      const si = el.getAttribute('data-si') || '';
+      if(el.tagName.toLowerCase()==='input' || el.tagName.toLowerCase()==='textarea'){
+        // do not overwrite user typed value; only set placeholder
+        if(el.placeholder){
+          el.placeholder = (lang==='si') ? (el.getAttribute('data-si') || el.placeholder) : (el.getAttribute('data-en') || el.placeholder);
+        }
+      } else {
+        el.textContent = (lang==='si') ? (el.getAttribute('data-si') || en) : en;
+      }
+    });
+    // small notes that use data-en in attributes (muted-note)
+    document.querySelectorAll('input,textarea').forEach(inp=>{
+      // if inputs have data-en/data-si attributes, set placeholders; otherwise keep existing placeholders
+      if(inp.hasAttribute('data-en')){
+        inp.placeholder = (lang==='si') ? inp.getAttribute('data-si') : inp.getAttribute('data-en');
+      }
+    });
+  }
+
+  // Initialize English by default
+  setLanguage('en');
+
+  btnEn.addEventListener('click', ()=>setLanguage('en'));
+  btnSi.addEventListener('click', ()=>setLanguage('si'));
+
+  // Simple submit handler (stub) - replace with your own server endpoint
+  document.getElementById('loanForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    // Basic validation example: ensure applicant NIC and phone present
+    const nic = this.querySelector('[name="app_nic"]');
+    const phone = this.querySelector('[name="app_phone"]');
+    if(!nic.value.trim() || !phone.value.trim()){
+      alert('Please fill required fields: National ID and Phone');
+      return;
+    }
+    // Prepare form data for upload (XHR / fetch) if you want
+    // const fd = new FormData(this);
+    // fetch('/submit', {method:'POST', body: fd})...
+    alert('Form ready to submit — replace alert with actual submit code to your server.');
+  });
+</script>
+</body>
+</html>
